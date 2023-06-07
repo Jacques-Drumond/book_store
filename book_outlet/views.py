@@ -5,14 +5,14 @@ from django.db.models import Avg, Max, Min
 # Create your views here.
 
 def index(request):
-    books = Book.objects.all()
+
+    books = Book.objects.all().order_by("title")
     total_num_of_books = books.count()
     avg_book_rating = books.aggregate(Avg("rating"))
-
     return render(request, "book_outlet/index.html", {
         "books": books,
         "total_number_of_books": total_num_of_books,
-        "average_rating": avg_book_rating
+        "average_rating": avg_book_rating.get("rating__avg")
     })
 
 def book_detail(request, slug):
