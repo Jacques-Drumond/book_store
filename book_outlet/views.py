@@ -9,10 +9,12 @@ def index(request):
     books = Book.objects.all().order_by("title")
     total_num_of_books = books.count()
     avg_book_rating = books.aggregate(Avg("rating"))
+    avg_book_rating = avg_book_rating.get("rating__avg")
+    avg_book_rating = ("%.2f" % avg_book_rating)
     return render(request, "book_outlet/index.html", {
         "books": books,
         "total_number_of_books": total_num_of_books,
-        "average_rating": avg_book_rating.get("rating__avg")
+        "average_rating": avg_book_rating
     })
 
 def book_detail(request, slug):
